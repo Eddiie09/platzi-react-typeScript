@@ -1,21 +1,26 @@
-import { useRef, useEffect, useState } from 'react'
-type Props = { image: string };
+import { useRef, useEffect, useState } from 'react';
+import type { ImgHTMLAttributes } from 'react';
 
-export const RandomFox = ({ image }: Props): JSX.Element => {
+
+type LazyImageProps = { src: string };
+type ImageNative =ImgHTMLAttributes<HTMLImageElement>;
+type Props = LazyImageProps & ImageNative;
+
+export const LazyImage = ({ src,...imgProps}: Props): JSX.Element => {
     const node = useRef<HTMLImageElement>(null);
-    const [src, setSrc] = useState('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4=');
+    const [currentSrc, setCurrentSrc] = useState('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4=');
 
     useEffect(() =>{
          //nuevo observador
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting){
-               setSrc(image)
+               setCurrentSrc(src);
             }
 
         });
     });
-    //boserver node
+    //observer node
     if(node.current){
         observer.observe(node.current);
     }
@@ -26,16 +31,14 @@ export const RandomFox = ({ image }: Props): JSX.Element => {
         observer.disconnect()
     }
 
-    }, [image]);
+    }, [src]);
    
     return (
         <img ref={node}
-            width={320}
-            height={320}
-            src={src}
-            className="rounded bg-gray-300"
+            src={currentSrc}
             alt="Random Fox"
             style={{ objectFit: 'cover' }}
+            {...imgProps}
         />
     );
 };
