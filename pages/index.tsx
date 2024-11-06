@@ -38,22 +38,32 @@ const Home: NextPage = () => {
        
       </Head>
 
-      <main>
-        <h1 className="text-3xl font-bold underline">Hey Platzi 😎!</h1>
-        <button onClick={addNewFox}>Add new fox</button>
-        {images.map(({id, url})=> (
-          <div key={id} className="p-4">
-          <LazyImage 
-          src= {url} 
+      <main className="p-8 bg-gray-100 min-h-screen">
+  <h1 className="text-4xl font-extrabold text-center text-indigo-600 mb-6">
+    Hey Platzi 😎!
+  </h1>
+  <button
+    onClick={addNewFox}
+    className="bg-blue-500 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300 mb-6 block mx-auto"
+  >
+    Add new fox
+  </button>
+  <div className="flex flex-wrap justify-center gap-6">
+    {images.map(({ id, url }) => (
+      <div key={id} className="p-4 bg-white shadow-lg rounded-lg w-80 h-80 flex justify-center items-center hover:scale-105 transition-transform duration-300">
+        <LazyImage
+          src={url}
           width={320}
           height={320}
-          className="rounded bg-gray-300"
+          className="rounded-lg bg-gray-300 w-full h-full object-cover"
           title="Random Fox"
-          onClick={()=>console.log('hey')}/>
-          </div>
-        ))}
-        
-      </main>
+          onClick={() => console.log('hey')}
+        />
+      </div>
+    ))}
+  </div>
+</main>
+
 
       <footer></footer>
     </div>
